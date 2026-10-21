@@ -28,6 +28,10 @@ TODO_COLOR = "#f1d36b"     # yellow – not yet
 PIN_COLOR = "red"          # chokepoints and other concepts
 SHAPE_TYPES = {"country", "territory"}
 
+# "Back" button in the top-left corner. Set BACK_URL = "" to hide it.
+BACK_URL = "/Pages/projects.html"
+BACK_LABEL = "Back to Research / Projects"
+
 # Common alternate spellings -> the name used in the borders file
 ALIASES = {
     "usa": "United States of America", "us": "United States of America",
@@ -199,6 +203,14 @@ def build(csv_path="notebook.csv", out_path="index.html"):
     </div>"""
     m.get_root().html.add_child(folium.Element(legend))
     m.get_root().header.add_child(folium.Element("<title>World Notebook</title>"))
+
+    if BACK_URL:
+        back = f"""
+        <a href="{BACK_URL}" style="position:fixed;top:12px;left:56px;z-index:9999;
+           background:#1f2a44;color:#fff;text-decoration:none;padding:14px 28px;
+           border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.3);
+           font:600 24px -apple-system,Segoe UI,Helvetica,Arial,sans-serif">&larr; {BACK_LABEL}</a>"""
+        m.get_root().html.add_child(folium.Element(back))
 
     m.save(ROOT / out_path)
 

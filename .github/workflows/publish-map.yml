@@ -1,0 +1,55 @@
+# Rebuilds the map and copies it into the portfolio site on every push.
+# Result: https://brycegelarden.org/Pages/projects/world_map.html
+#
+# One-time setup: add a repository secret named PORTFOLIO_GEOGRAPHY_WORLD_TOKEN
+# (a fine-grained GitHub token with Contents: Read and write on the portfolio repo).
+
+name: Publish map to portfolio
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:   # lets you run it by hand from the Actions tab
+
+env:
+  PORTFOLIO_REPO: brycemgelarden/brycegelarden.github.io   # <-- change to your portfolio repo
+  TARGET_PATH: ResearchProjects/Geography_World_Notebook/Geography_World_Notebook.html
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out notebook repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build map
+        run: |
+          pip install -r requirements.txt
+          python build_map.py
+
+      - name: Check out portfolio repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.PORTFOLIO_REPO }}
+          token: ${{ secrets.PORTFOLIO_GEOGRAPHY_WORLD_TOKEN }}
+          path: portfolio
+
+      - name: Copy map into portfolio and push
+        run: |
+          mkdir -p "portfolio/$(dirname "$TARGET_PATH")"
+          cp index.html "portfolio/$TARGET_PATH"
+          cd portfolio
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add "$TARGET_PATH"
+          if git diff --cached --quiet; then
+            echo "Map unchanged, nothing to publish."
+          else
+            git commit -m "Update world map (${GITHUB_SHA::7})"
+            git push
+          fi
