@@ -1,4 +1,6 @@
-# World Notebook
+# Geography World Notebook
+
+**[View the live map →](https://brycegelarden.org/ResearchProjects/Geography_World_Notebook/Geography_World_Notebook.html)**
 
 An interactive map that tracks my daily geography notebook pages. Countries I've covered are shaded green, the rest yellow, and chokepoints or other concepts show as red anchor pins. Hover over anything to see its name, plus the page number and date if I've written it up.
 
