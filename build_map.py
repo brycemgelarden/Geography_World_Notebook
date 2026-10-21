@@ -28,11 +28,9 @@ TODO_COLOR = "#f1d36b"     # yellow – not yet
 PIN_COLOR = "red"          # chokepoints and other concepts
 SHAPE_TYPES = {"country", "territory"}
 
-# "Back" button in the top-left corner. Set BACK_URL = "" to hide it.
 BACK_URL = "/Pages/projects.html"
 BACK_LABEL = "Back to Research / Projects"
 
-# Common alternate spellings -> the name used in the borders file
 ALIASES = {
     "usa": "United States of America", "us": "United States of America",
     "united states": "United States of America", "america": "United States of America",
@@ -138,7 +136,6 @@ def build(csv_path="notebook.csv", out_path="index.html"):
             if feat is not None:
                 shaded.setdefault(feat["properties"]["admin"], (feat, []))[1].append(r)
                 continue
-            # Too small to have a shape – drop a green pin instead
             if norm(topic) in places:
                 pins.append((r, places[norm(topic)], "green"))
                 continue
@@ -151,6 +148,7 @@ def build(csv_path="notebook.csv", out_path="index.html"):
     for feat, entries in shaded.values():
         feat["properties"]["status"] = "done"
         feat["properties"]["info"] = "<br>".join(entry_line(e) for e in entries)
+
 
     # ---- map ---------------------------------------------------------------
     m = folium.Map(location=[25, 10], zoom_start=2, min_zoom=2,

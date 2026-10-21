@@ -1,18 +1,12 @@
-# Rebuilds the map and copies it into the portfolio site on every push.
-# Result: https://brycegelarden.org/Pages/projects/world_map.html
-#
-# One-time setup: add a repository secret named PORTFOLIO_GEOGRAPHY_WORLD_TOKEN
-# (a fine-grained GitHub token with Contents: Read and write on the portfolio repo).
-
 name: Publish map to portfolio
 
 on:
   push:
     branches: [main, master]
-  workflow_dispatch:   # lets you run it by hand from the Actions tab
+  workflow_dispatch:  
 
 env:
-  PORTFOLIO_REPO: brycemgelarden/brycegelarden.github.io   # <-- change to your portfolio repo
+  PORTFOLIO_REPO: brycemgelarden/brycegelarden.github.io   
   TARGET_PATH: ResearchProjects/Geography_World_Notebook/Geography_World_Notebook.html
 
 jobs:
